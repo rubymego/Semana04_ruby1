@@ -1,69 +1,48 @@
-# Implementation Plan - ConsultaProductosREST
+# Implementation Plan - Add Product Feature
 
-This plan outlines the steps to develop the Android application that fetches and displays product information from a REST API using Retrofit.
-
-## User Review Required
-
-> [!IMPORTANT]
-> I will use `https://fakestoreapi.com/` as the base URL for the REST service. If you have a different API endpoint, please provide it so I can adjust the models and the client configuration.
+This plan adds functionality to create new products directly within the `MainActivity` screen.
 
 ## Proposed Changes
 
-### Configuration
-
-#### [MODIFY] [libs.versions.toml](file:///C:/Users/Usuario/Documents/PRACTICAS_CALIFICADAS/ConsultaProductosREST/gradle/libs.versions.toml)
-Add versions and libraries for Retrofit, Gson, and OkHttp.
-
-#### [MODIFY] [build.gradle.kts](file:///C:/Users/Usuario/Documents/PRACTICAS_CALIFICADAS/ConsultaProductosREST/app/build.gradle.kts)
-Include the new dependencies in the app module.
-
-#### [MODIFY] [AndroidManifest.xml](file:///C:/Users/Usuario/Documents/PRACTICAS_CALIFICADAS/ConsultaProductosREST/app/src/main/AndroidManifest.xml)
-Add the `<uses-permission android:name="android.permission.INTERNET" />`.
-
----
-
-### Data Models
-
-#### [NEW] [Producto.java](file:///C:/Users/Usuario/Documents/PRACTICAS_CALIFICADAS/ConsultaProductosREST/app/src/main/java/com/example/consulta_productos_rest/Producto.java)
-POJO to represent a product (ID, Name, Price, Category).
-
-#### [NEW] [ProductoResponse.java](file:///C:/Users/Usuario/Documents/PRACTICAS_CALIFICADAS/ConsultaProductosREST/app/src/main/java/com/example/consulta_productos_rest/ProductoResponse.java)
-If the API wraps the list in an object. (For Fakestore, it's a direct list, but I'll provide it if needed).
-
----
-
-### Networking
-
-#### [NEW] [RetrofitClient.java](file:///C:/Users/Usuario/Documents/PRACTICAS_CALIFICADAS/ConsultaProductosREST/app/src/main/java/com/example/consulta_productos_rest/RetrofitClient.java)
-Singleton to provide the Retrofit instance.
-
-#### [NEW] [ApiService.java](file:///C:/Users/Usuario/Documents/PRACTICAS_CALIFICADAS/ConsultaProductosREST/app/src/main/java/com/example/consulta_productos_rest/ApiService.java)
-Interface defining the API endpoints using Retrofit annotations.
-
----
-
-### UI Components
+### UI Update
 
 #### [MODIFY] [activity_main.xml](file:///C:/Users/Usuario/Documents/PRACTICAS_CALIFICADAS/ConsultaProductosREST/app/src/main/res/layout/activity_main.xml)
-Add a `RecyclerView` to display the list of products.
+- Add a form at the top of the screen (inside a `MaterialCardView`) containing:
+    - `EditText` for Product Name.
+    - `EditText` for Price (numeric input).
+    - `EditText` for Category.
+    - `Button` to "Add Product".
+- Reposition the `RecyclerView` to sit below this new form.
 
-#### [NEW] [item_producto.xml](file:///C:/Users/Usuario/Documents/PRACTICAS_CALIFICADAS/ConsultaProductosREST/app/src/main/res/layout/item_producto.xml)
-Layout for a single product row.
+---
 
-#### [NEW] [ProductoAdapter.java](file:///C:/Users/Usuario/Documents/PRACTICAS_CALIFICADAS/ConsultaProductosREST/app/src/main/java/com/example/consulta_productos_rest/ProductoAdapter.java)
-Adapter to bind product data to the `RecyclerView`.
+### Networking layer
+
+#### [MODIFY] [ApiService.java](file:///C:/Users/Usuario/Documents/PRACTICAS_CALIFICADAS/ConsultaProductosREST/app/src/main/java/com/example/consulta_productos_rest/ApiService.java)
+- Add a new `@POST("products")` method to send product data to the server.
+
+---
+
+### Logic Update
+
+#### [MODIFY] [ProductoAdapter.java](file:///C:/Users/Usuario/Documents/PRACTICAS_CALIFICADAS/ConsultaProductosREST/app/src/main/java/com/example/consulta_productos_rest/ProductoAdapter.java)
+- Add a method to add a new product to the existing list and notify the adapter.
 
 #### [MODIFY] [MainActivity.java](file:///C:/Users/Usuario/Documents/PRACTICAS_CALIFICADAS/ConsultaProductosREST/app/src/main/java/com/example/consulta_productos_rest/MainActivity.java)
-Implement the API call and setup the RecyclerView.
+- Initialize the new form fields.
+- Implement the click listener for the "Add" button:
+    - Validate inputs.
+    - Create a `Producto` object.
+    - Perform the Retrofit `POST` request.
+    - On success, add the new product to the list and clear the fields.
 
 ---
 
 ## Verification Plan
 
-### Automated Tests
-- N/A for this initial implementation, but I will ensure the build is successful.
-
 ### Manual Verification
-1.  Deploy the app to the device.
-2.  Verify that the list of products is fetched and displayed.
-3.  Check that ID, Name, Price, and Category are correctly shown.
+1.  Open the app.
+2.  Enter values in Name, Price, and Category.
+3.  Click "Add Product".
+4.  Verify that a Toast message indicates success and the new product appears at the top/bottom of the list.
+5.  Check that the input fields are cleared after adding.

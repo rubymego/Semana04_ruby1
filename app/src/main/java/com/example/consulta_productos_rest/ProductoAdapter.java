@@ -37,6 +37,18 @@ public class ProductoAdapter extends RecyclerView.Adapter<ProductoAdapter.Produc
         return productos != null ? productos.size() : 0;
     }
 
+    public void addProducto(Producto producto) {
+        if (productos != null) {
+            productos.add(0, producto);
+            notifyItemInserted(0);
+        }
+    }
+
+    public void setProductos(List<Producto> productos) {
+        this.productos = productos;
+        notifyDataSetChanged();
+    }
+
     public static class ProductoViewHolder extends RecyclerView.ViewHolder {
         TextView textViewId, textViewNombre, textViewPrecio, textViewCategoria;
 

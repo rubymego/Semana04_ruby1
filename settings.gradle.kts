@@ -22,6 +22,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Consulta_Productos_REST"
+rootProject.name = "Semana04_ruby"
 include(":app")
  

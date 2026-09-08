@@ -1,33 +1,27 @@
-# Walkthrough - ConsultaProductosREST Implementation
+# Walkthrough - Add Product Feature Implementation
 
-I have successfully implemented the product consultation application using Retrofit to fetch data from a REST API.
+I have implemented the ability to add new products directly from the main screen.
 
 ## Changes Made
 
-### Configuration
-- **Gradle**: Added Retrofit, Gson, OkHttp, and RecyclerView dependencies in `libs.versions.toml` and applied them in `build.gradle.kts`.
-- **Manifest**: Added the `INTERNET` permission to `AndroidManifest.xml`.
-
-### Data Models
-- Created [Producto.java](file:///C:/Users/Usuario/Documents/PRACTICAS_CALIFICADAS/ConsultaProductosREST/app/src/main/java/com/example/consulta_productos_rest/Producto.java) to map JSON data from the API.
+### UI Enhancements
+- Added a form inside a `MaterialCardView` at the top of `activity_main.xml`.
+- Included input fields for **Product Name**, **Price**, and **Category**.
+- Added an **"Agregar Producto"** button to trigger the creation process.
 
 ### Networking
-- Implemented [ApiService.java](file:///C:/Users/Usuario/Documents/PRACTICAS_CALIFICADAS/ConsultaProductosREST/app/src/main/java/com/example/consulta_productos_rest/ApiService.java) with a `@GET("products")` endpoint.
-- Created [RetrofitClient.java](file:///C:/Users/Usuario/Documents/PRACTICAS_CALIFICADAS/ConsultaProductosREST/app/src/main/java/com/example/consulta_productos_rest/RetrofitClient.java) to manage the Retrofit instance with a logging interceptor for debugging.
+- Updated `ApiService.java` to include the `@POST("products")` endpoint, allowing the app to send new product data to the server.
 
-### UI and Adapter
-- Updated [activity_main.xml](file:///C:/Users/Usuario/Documents/PRACTICAS_CALIFICADAS/ConsultaProductosREST/app/src/main/res/layout/activity_main.xml) to include a `RecyclerView`.
-- Created [item_producto.xml](file:///C:/Users/Usuario/Documents/PRACTICAS_CALIFICADAS/ConsultaProductosREST/app/src/main/res/layout/item_producto.xml) using `MaterialCardView` for a clean product display.
-- Implemented [ProductoAdapter.java](file:///C:/Users/Usuario/Documents/PRACTICAS_CALIFICADAS/ConsultaProductosREST/app/src/main/java/com/example/consulta_productos_rest/ProductoAdapter.java) to bind product data to the UI.
+### Adapter Logic
+- Enhanced `ProductoAdapter.java` with a `addProducto` method to insert new items at the top of the list and update the UI instantly.
+- Added `setProductos` to refresh the entire list more efficiently.
 
-### Logic
-- Modified [MainActivity.java](file:///C:/Users/Usuario/Documents/PRACTICAS_CALIFICADAS/ConsultaProductosREST/app/src/main/java/com/example/consulta_productos_rest/MainActivity.java) to trigger the asynchronous API call and update the RecyclerView upon success.
+### App Logic
+- Integrated form validation in `MainActivity.java`.
+- Implemented the `POST` request handling:
+    - On success: The new product is added to the list, a success message is shown, and the input fields are cleared.
+    - On failure: An error message is displayed to the user.
 
-## Verification Results
-
-### Build
-- Successfully synced Gradle and verified code with static analysis.
-
-### Runtime (Simulated)
-- The app is configured to fetch from `https://fakestoreapi.com/products`.
-- Displays: **ID**, **Nombre (Title)**, **Precio**, and **Categoría**.
+## Verification
+- Verified that the layout correctly positions the form above the list.
+- Static analysis confirmed all methods are correctly implemented and wired.
