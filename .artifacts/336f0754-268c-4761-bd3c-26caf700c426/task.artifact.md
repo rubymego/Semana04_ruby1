@@ -1,0 +1,7 @@
+- [x] Configuring Gradle dependencies and AndroidManifest permissions
+- [x] Creating data models (Producto.java)
+- [x] Implementing Networking layer (RetrofitClient, ApiService)
+- [x] Designing UI (activity_main.xml, item_producto.xml)
+- [x] Implementing ProductAdapter
+- [x] Wiring everything in MainActivity
+- [x] Final verification and build
